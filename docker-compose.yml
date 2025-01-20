@@ -27,14 +27,14 @@ services:
     volumes:
       - ./nginx/html:/usr/share/nginx/html
 
-  #vaultwarden:
-  #  image: vaultwarden/server:latest
-  #  container_name: "vaultwarden"
-  #  hostname: "vaultwarden"
-  #  ports:
-  #    - "3012:3012"
-  #  volumes:
-  #    - ./vaultwarden/vwdata:/data
+  vaultwarden:
+    image: vaultwarden/server:1.32.7
+    container_name: "vaultwarden"
+    hostname: "vaultwarden"
+    ports:
+      - "3012:3012"
+    volumes:
+      - ./vaultwarden/vwdata:/data
 
 
 networks:
