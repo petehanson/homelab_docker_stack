@@ -1,0 +1,42 @@
+services:
+
+  caddy:
+    #image: petehanson/caddy-duckdns
+    build:
+      context: ./caddy
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+
+  #whoami:
+  #  image: "containous/whoami"
+  #  container_name: "whoami"
+  #  hostname: "whoami"
+
+  nginx:
+    image: nginx
+    container_name: "nginx"
+    hostname: "nginx"
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+
+  #vaultwarden:
+  #  image: vaultwarden/server:latest
+  #  container_name: "vaultwarden"
+  #  hostname: "vaultwarden"
+  #  ports:
+  #    - "3012:3012"
+  #  volumes:
+  #    - ./vaultwarden/vwdata:/data
+
+
+networks:
+  default:
+    name: caddy_net

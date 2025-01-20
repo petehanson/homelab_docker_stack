@@ -1,0 +1,12 @@
+{$HOSTNAME}.duckdns.org {
+    tls {
+        dns duckdns {$TOKEN}
+    }
+    #handle_path /vaultwarden* {
+    #    reverse_proxy vaultwarden:80
+    #}
+
+    handle_path /nginx* {
+        reverse_proxy nginx:80
+    }
+}
