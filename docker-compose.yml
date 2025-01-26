@@ -36,6 +36,22 @@ services:
     volumes:
       - ./vaultwarden/vwdata:/data
 
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    environment:
+      TZ: 'America/Chicago'
+    # Volumes store your data between container upgrades
+    volumes:
+      - './pihole/etc-pihole:/etc/pihole'
+      - './pihole/etc-dnsmasq.d:/etc/dnsmasq.d'
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    restart: unless-stopped
+
 
 networks:
   default:
