@@ -11,8 +11,16 @@
         reverse_proxy nginx:80
     }
 
-    handle_path /pihole* {
-        reverse_proxy pihole:80
-        rewrite * pihole/admin{uri}
+    #handle_path /pihole* {
+    #    reverse_proxy pihole:80
+    #    rewrite * pihole/admin{uri}
+    #}
+}
+
+pihole.{$HOSTNAME}.duckdns.org {
+    tls {
+        dns duckdns {$TOKEN}
     }
+
+    reverse_proxy pihole:80
 }
