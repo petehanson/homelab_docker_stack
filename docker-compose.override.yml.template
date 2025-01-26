@@ -11,4 +11,11 @@ services:
   
   pihole:
     environment:
-      WEBPASSWORD: 'PASSWORD_FOR_PIHOLE_ADMIN'
+      WEBPASSWORD: ${ADMIN_PASSWORD}
+
+  minio:
+    environment:
+      MINIO_ROOT_USER: ${ADMIN_USER}
+      MINIO_ROOT_PASSWORD: ${ADMIN_PASSWORD}
+    volumes:
+      - /path/to/minio/folder:/data
