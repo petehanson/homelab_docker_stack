@@ -2,6 +2,10 @@
     tls {
         dns duckdns {$TOKEN}
     }
+
+    root * /usr/share/caddy
+    file_server
+    encode gzip zstd
     
     handle_path /vaultwarden* {
         reverse_proxy vaultwarden:80
@@ -10,11 +14,6 @@
     handle_path /nginx* {
         reverse_proxy nginx:80
     }
-
-    #handle_path /pihole* {
-    #    reverse_proxy pihole:80
-    #    rewrite * pihole/admin{uri}
-    #}
 }
 
 pihole.{$HOSTNAME}.duckdns.org {
