@@ -3,3 +3,7 @@ docker-compose.override.yml
 
 caddy/config/caddy
 caddy/data/caddy
+pihole/**/*
+!pihole/etc-pihole/.empty
+vaultwarden/**/*
+!vaultwarden/vwdata/.empty
