@@ -4,6 +4,10 @@ services:
       HOSTNAME: YOUR_HOSTNAME
       MY_DOMAIN: YOUR_HOSTNAME.duckdns.org
       TOKEN: DUCKDNS_TOKEN_API_KEY
+
+  vaultwarden:
+    volumes:
+      - /path/to/vwdata/on/host:/data
   
   pihole:
     environment:
