@@ -1,0 +1,10 @@
+services:
+  caddy:
+    environment:
+      HOSTNAME: YOUR_HOSTNAME
+      MY_DOMAIN: YOUR_HOSTNAME.duckdns.org
+      TOKEN: DUCKDNS_TOKEN_API_KEY
+  
+  pihole:
+    environment:
+      WEBPASSWORD: 'PASSWORD_FOR_PIHOLE_ADMIN'
