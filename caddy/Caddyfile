@@ -23,3 +23,12 @@ pihole.{$HOSTNAME}.duckdns.org {
 
     reverse_proxy pihole:80
 }
+
+
+minio.{$HOSTNAME}.duckdns.org {
+    tls {
+        dns duckdns {$TOKEN}
+    }
+
+    reverse_proxy minio:9001
+}

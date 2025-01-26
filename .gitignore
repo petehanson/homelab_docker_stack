@@ -7,3 +7,5 @@ pihole/**/*
 !pihole/etc-pihole/.empty
 vaultwarden/**/*
 !vaultwarden/vwdata/.empty
+minio/data/**/*
+!minio/data/.empty

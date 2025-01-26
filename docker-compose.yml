@@ -59,6 +59,17 @@ services:
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     restart: unless-stopped
 
+  minio:
+    image: quay.io/minio/minio
+    container_name: "minio"
+    ports:
+      - "9000:9000/tcp"
+      - "9001:9001/tcp"
+
+    volumes:
+      - ./minio/data:/data
+    command: server /data --console-address ":9001"
+    restart: always
 
 networks:
   default:
