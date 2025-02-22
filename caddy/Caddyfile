@@ -32,3 +32,11 @@ minio.{$HOSTNAME}.duckdns.org {
 
     reverse_proxy minio:9001
 }
+
+shinobi.{$HOSTNAME}.duckdns.org {
+    tls {
+        dns duckdns {$TOKEN}
+    }
+
+    reverse_proxy shinobi:8080
+}

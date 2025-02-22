@@ -71,6 +71,37 @@ services:
     command: server /data --console-address ":9001"
     restart: always
 
+  shinobi-sql:
+    image: mysql:5.7
+    volumes:
+      - ./ShinobiDocker/ShinobiSQL:/var/lib/mysql
+      - ./ShinobiDocker/mysql-init:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=ccio
+      - MYSQL_USER=majesticflame
+      - MYSQL_PASSWORD=1234
+    restart: unless-stopped
+
+  shinobi:
+    build:
+      context: ./ShinobiDocker
+      args:
+        SHINOBI_BRANCH: dev
+    volumes:
+      - /dev/shm/ShinobiRAM:/dev/shm/streams
+      - ./ShinobiDocker/Shinobi:/home/Shinobi
+    ports:
+      - "8080:8080"
+    environment:
+      - HOME=/home/Shinobi
+      - DB_HOST=shinobi-sql
+      - DB_USER=majesticflame
+      - DB_PASSWORD=1234
+      - DB_DATABASE=ccio
+      - SHINOBI_UPDATE=false
+    restart: unless-stopped
+
 networks:
   default:
     name: caddy_net
