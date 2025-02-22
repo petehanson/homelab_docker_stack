@@ -79,8 +79,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=ccio
-      - MYSQL_USER=majesticflame
-      - MYSQL_PASSWORD=1234
     restart: unless-stopped
 
   shinobi:
@@ -96,8 +94,6 @@ services:
     environment:
       - HOME=/home/Shinobi
       - DB_HOST=shinobi-sql
-      - DB_USER=majesticflame
-      - DB_PASSWORD=1234
       - DB_DATABASE=ccio
       - SHINOBI_UPDATE=false
     restart: unless-stopped
