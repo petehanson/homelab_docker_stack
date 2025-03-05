@@ -36,6 +36,7 @@ services:
       - "3012:3012"
     volumes:
       - ./vaultwarden/vwdata:/data
+    restart: unless-stopped
 
   pihole:
     container_name: pihole
