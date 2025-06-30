@@ -25,6 +25,7 @@ services:
     image: nginx
     container_name: "nginx"
     hostname: "nginx"
+    restart: unless-stopped
     volumes:
       - ./nginx/html:/usr/share/nginx/html
 
