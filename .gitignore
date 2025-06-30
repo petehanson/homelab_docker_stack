@@ -9,3 +9,6 @@ vaultwarden/**/*
 !vaultwarden/vwdata/.empty
 minio/data/**/*
 !minio/data/.empty
+ShinobiDocker/Shinobi/**/*
+ShinobiDocker/ShinobiSQL/**/*
+
