@@ -29,7 +29,7 @@ services:
       - ./nginx/html:/usr/share/nginx/html
 
   vaultwarden:
-    image: vaultwarden/server:1.32.7
+    image: vaultwarden/server:latest
     container_name: "vaultwarden"
     hostname: "vaultwarden"
     ports:
@@ -72,32 +72,32 @@ services:
     command: server /data --console-address ":9001"
     restart: always
 
-  shinobi-sql:
-    image: mysql:5.7
-    volumes:
-      - ./ShinobiDocker/ShinobiSQL:/var/lib/mysql
-      - ./ShinobiDocker/mysql-init:/docker-entrypoint-initdb.d
-    environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=ccio
-    restart: unless-stopped
-
-  shinobi:
-    build:
-      context: ./ShinobiDocker
-      args:
-        SHINOBI_BRANCH: dev
-    volumes:
-      - /dev/shm/ShinobiRAM:/dev/shm/streams
-      - ./ShinobiDocker/Shinobi:/home/Shinobi
-    ports:
-      - "8080:8080"
-    environment:
-      - HOME=/home/Shinobi
-      - DB_HOST=shinobi-sql
-      - DB_DATABASE=ccio
-      - SHINOBI_UPDATE=false
-    restart: unless-stopped
+#  shinobi-sql:
+#    image: mysql:lts
+#    volumes:
+#      - ./ShinobiDocker/ShinobiSQL:/var/lib/mysql
+#      - ./ShinobiDocker/mysql-init:/docker-entrypoint-initdb.d
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=rootpassword
+#      - MYSQL_DATABASE=ccio
+#    restart: unless-stopped
+#
+#  shinobi:
+#    build:
+#      context: ./ShinobiDocker
+#      args:
+#        SHINOBI_BRANCH: dev
+#    volumes:
+#      - /dev/shm/ShinobiRAM:/dev/shm/streams
+#      - ./ShinobiDocker/Shinobi:/home/Shinobi
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - HOME=/home/Shinobi
+#      - DB_HOST=shinobi-sql
+#      - DB_DATABASE=ccio
+#      - SHINOBI_UPDATE=false
+#    restart: unless-stopped
 
 networks:
   default:
