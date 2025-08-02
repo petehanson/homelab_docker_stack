@@ -100,6 +100,19 @@ services:
 #      - SHINOBI_UPDATE=false
 #    restart: unless-stopped
 
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    network_mode: host  # required for local discovery and sync
+    volumes:
+      - ./syncthing/config:/var/syncthing/config
+      - ./syncthing/data:/var/syncthing/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped
+
 networks:
   default:
     name: caddy_net

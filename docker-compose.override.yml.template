@@ -40,3 +40,9 @@ services:
       - SHINOBI_UPDATE=false
     volumes:
       - /path/to/application/folder:/home/Shinobi
+
+
+  syncthing:
+    volumes:
+      - /mnt/hddpool/syncthing/config:/var/syncthing/config
+      - /mnt/hddpool/syncthing/data:/var/syncthing/data
