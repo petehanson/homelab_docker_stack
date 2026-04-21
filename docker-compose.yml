@@ -25,17 +25,19 @@ services:
     image: nginx
     container_name: "nginx"
     hostname: "nginx"
+    restart: unless-stopped
     volumes:
       - ./nginx/html:/usr/share/nginx/html
 
   vaultwarden:
-    image: vaultwarden/server:1.32.7
+    image: vaultwarden/server:latest
     container_name: "vaultwarden"
     hostname: "vaultwarden"
     ports:
       - "3012:3012"
     volumes:
       - ./vaultwarden/vwdata:/data
+    restart: unless-stopped
 
   pihole:
     container_name: pihole
@@ -48,7 +50,7 @@ services:
       TZ: 'America/Chicago'
       PIHOLE_DNS_: 8.8.8.8;8.8.4.4
     # Volumes store your data between container upgrades
-
+    shm_size: '256m'
     dns:
       - 127.0.0.1
       - 8.8.8.8
@@ -71,31 +73,44 @@ services:
     command: server /data --console-address ":9001"
     restart: always
 
-  shinobi-sql:
-    image: mysql:5.7
-    volumes:
-      - ./ShinobiDocker/ShinobiSQL:/var/lib/mysql
-      - ./ShinobiDocker/mysql-init:/docker-entrypoint-initdb.d
-    environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=ccio
-    restart: unless-stopped
+#  shinobi-sql:
+#    image: mysql:lts
+#    volumes:
+#      - ./ShinobiDocker/ShinobiSQL:/var/lib/mysql
+#      - ./ShinobiDocker/mysql-init:/docker-entrypoint-initdb.d
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=rootpassword
+#      - MYSQL_DATABASE=ccio
+#    restart: unless-stopped
+#
+#  shinobi:
+#    build:
+#      context: ./ShinobiDocker
+#      args:
+#        SHINOBI_BRANCH: dev
+#    volumes:
+#      - /dev/shm/ShinobiRAM:/dev/shm/streams
+#      - ./ShinobiDocker/Shinobi:/home/Shinobi
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - HOME=/home/Shinobi
+#      - DB_HOST=shinobi-sql
+#      - DB_DATABASE=ccio
+#      - SHINOBI_UPDATE=false
+#    restart: unless-stopped
 
-  shinobi:
-    build:
-      context: ./ShinobiDocker
-      args:
-        SHINOBI_BRANCH: dev
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    network_mode: host  # required for local discovery and sync
     volumes:
-      - /dev/shm/ShinobiRAM:/dev/shm/streams
-      - ./ShinobiDocker/Shinobi:/home/Shinobi
-    ports:
-      - "8080:8080"
+      - ./syncthing/config:/var/syncthing/config
+      - ./syncthing/data:/var/syncthing/data
     environment:
-      - HOME=/home/Shinobi
-      - DB_HOST=shinobi-sql
-      - DB_DATABASE=ccio
-      - SHINOBI_UPDATE=false
+      - PUID=1000
+      - PGID=1000
     restart: unless-stopped
 
 networks:
