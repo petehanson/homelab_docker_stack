@@ -1,38 +1,36 @@
-(duckdns_tls) {
+*.{$HOSTNAME}.duckdns.org, {$HOSTNAME}.duckdns.org {
     tls {
         dns duckdns {$TOKEN}
         resolvers 8.8.8.8
     }
-}
 
-{$HOSTNAME}.duckdns.org {
-    import duckdns_tls
-
-    root * /usr/share/caddy
-    file_server
-    encode gzip zstd
-
-    handle_path /vaultwarden* {
-        reverse_proxy vaultwarden:80
+    @root host {$HOSTNAME}.duckdns.org
+    handle @root {
+        root * /usr/share/caddy
+        file_server
+        encode gzip zstd
+        handle_path /vaultwarden* {
+            reverse_proxy vaultwarden:80
+        }
     }
-}
 
-pihole.{$HOSTNAME}.duckdns.org {
-    import duckdns_tls
-    reverse_proxy pihole:80
-}
+    @pihole host pihole.{$HOSTNAME}.duckdns.org
+    handle @pihole {
+        reverse_proxy pihole:80
+    }
 
-minio.{$HOSTNAME}.duckdns.org {
-    import duckdns_tls
-    reverse_proxy minio:9001
-}
+    @minio host minio.{$HOSTNAME}.duckdns.org
+    handle @minio {
+        reverse_proxy minio:9001
+    }
 
-nomad.{$HOSTNAME}.duckdns.org {
-    import duckdns_tls
-    reverse_proxy nomad_admin:8080
-}
+    @nomad host nomad.{$HOSTNAME}.duckdns.org
+    handle @nomad {
+        reverse_proxy nomad_admin:8080
+    }
 
-dozzle.{$HOSTNAME}.duckdns.org {
-    import duckdns_tls
-    reverse_proxy nomad_dozzle:8080
+    @dozzle host dozzle.{$HOSTNAME}.duckdns.org
+    handle @dozzle {
+        reverse_proxy nomad_dozzle:8080
+    }
 }

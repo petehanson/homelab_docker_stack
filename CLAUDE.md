@@ -54,8 +54,7 @@ The per-service override files follow the same pattern — only override what di
 
 ## Architecture
 
-- **Caddy** (`caddy/`) — custom-built image with the `caddy-dns/duckdns` plugin. `Caddyfile` uses `{$HOSTNAME}` and `{$TOKEN}` from the override file. Routes `/vaultwarden*` by path and `pihole.*`, `minio.*` as subdomains. All traffic HTTPS.
-- **Caddyfile snippet** — TLS config is defined once in the `(duckdns_tls)` snippet and imported into each site block. When adding a new service, `import duckdns_tls` instead of repeating the `tls` block.
+- **Caddy** (`caddy/`) — custom-built image with the `caddy-dns/duckdns` plugin. `Caddyfile` uses `{$HOSTNAME}` and `{$TOKEN}` from the override file. A single wildcard cert covers `*.{$HOSTNAME}.duckdns.org` and `{$HOSTNAME}.duckdns.org` — all services share one cert, so no cert delay when adding new services. Routing is done with `@name host ...` matchers inside one site block.
 - **`resolvers 8.8.8.8` in the TLS config** — Caddy's DNS-01 propagation check normally queries authoritative nameservers directly using Docker's internal resolver (`127.0.0.11`), which times out reaching external nameservers. Setting `resolvers 8.8.8.8` routes the propagation check through a public recursive resolver instead. Do not remove this.
 - **Shared `proxy` network** — created once on the host (`docker network create proxy`). All stacks declare it as `external: true`. Caddy reaches backend containers by container name across stacks.
 - **Syncthing** — uses `network_mode: host` for local device discovery; not on the `proxy` network. UI available on host port 8384.
@@ -65,7 +64,7 @@ The per-service override files follow the same pattern — only override what di
 ## Adding a New Service
 
 1. Create `./servicename/docker-compose.yml` joining `proxy` as external
-2. Add a site block to `caddy/Caddyfile` using `import duckdns_tls`
+2. Add a `@name host servicename.{$HOSTNAME}.duckdns.org` matcher and `handle @name` block to `caddy/Caddyfile` — no TLS changes needed, the wildcard cert covers it automatically
 3. Reload Caddy: `docker exec caddy caddy reload --config /etc/caddy/Caddyfile`
 4. Create `./servicename/up.sh` and `./servicename/down.sh` following the pattern of existing scripts
 5. Add the service to the root `./up.sh`
