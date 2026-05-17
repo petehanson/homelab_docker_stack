@@ -1,5 +1,8 @@
 .env
 docker-compose.override.yml
+vaultwarden/docker-compose.override.yml
+minio/docker-compose.override.yml
+syncthing/docker-compose.override.yml
 
 caddy/config/caddy
 caddy/data/caddy
@@ -7,18 +10,26 @@ caddy/data/caddy
 pihole/**/*
 !pihole/etc-pihole/.empty
 !pihole/docker-compose.yml
+!pihole/up.sh
+!pihole/down.sh
 
 vaultwarden/**/*
 !vaultwarden/vwdata/.empty
 !vaultwarden/docker-compose.yml
+!vaultwarden/up.sh
+!vaultwarden/down.sh
 
 minio/data/**/*
 !minio/data/.empty
+!minio/up.sh
+!minio/down.sh
 
 syncthing/config/**/*
 !syncthing/config/.empty
 syncthing/data/**/*
 !syncthing/data/.empty
+!syncthing/up.sh
+!syncthing/down.sh
 
 ShinobiDocker/Shinobi/**/*
 ShinobiDocker/ShinobiSQL/**/*

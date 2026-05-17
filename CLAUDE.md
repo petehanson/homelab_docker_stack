@@ -19,14 +19,15 @@ A collection of self-hosted services, each in its own Docker Compose stack, all 
 ## Common Commands
 
 ```bash
-# Start core (Caddy) — always first
-docker compose up -d
+# Bring everything up
+./up.sh
 
-# Start a service stack
-docker compose --env-file .env -f pihole/docker-compose.yml up -d
-docker compose --env-file .env -f vaultwarden/docker-compose.yml up -d
-docker compose --env-file .env -f minio/docker-compose.yml up -d
-docker compose -f syncthing/docker-compose.yml up -d
+# Individual services (run from anywhere)
+./caddy/up.sh        ./caddy/down.sh
+./pihole/up.sh       ./pihole/down.sh
+./vaultwarden/up.sh  ./vaultwarden/down.sh
+./minio/up.sh        ./minio/down.sh
+./syncthing/up.sh    ./syncthing/down.sh
 
 # Rebuild Caddy after Caddyfile or Dockerfile changes
 docker compose build caddy && docker compose up -d caddy
@@ -41,24 +42,32 @@ docker compose -f pihole/docker-compose.yml logs -f
 
 ## Configuration Setup
 
-Two files are gitignored and must be created from templates before first run:
+Files that are gitignored and must be created before first run:
 
-- `.env` — copy from `env.template`; provides `ADMIN_USER`, `ADMIN_PASSWORD` to all stacks via `--env-file`
+- `.env` — copy from `env.template`; provides `ADMIN_USER`, `ADMIN_PASSWORD` to all stacks
 - `docker-compose.override.yml` — copy from `docker-compose.override.yml.template`; sets `HOSTNAME` and DuckDNS `TOKEN` for Caddy
+- `vaultwarden/docker-compose.override.yml` — host-specific volume paths for vaultwarden
+- `minio/docker-compose.override.yml` — host-specific volume paths for minio
+- `syncthing/docker-compose.override.yml` — host-specific volume paths for syncthing
+
+The per-service override files follow the same pattern — only override what differs on the host machine (typically volume paths).
 
 ## Architecture
 
 - **Caddy** (`caddy/`) — custom-built image with the `caddy-dns/duckdns` plugin. `Caddyfile` uses `{$HOSTNAME}` and `{$TOKEN}` from the override file. Routes `/vaultwarden*` by path and `pihole.*`, `minio.*` as subdomains. All traffic HTTPS.
-- **Shared `proxy` network** — created once on the host (`docker network create proxy`). Caddy defines it; all other stacks join it as `external: true`. Caddy reaches backend containers by container name.
+- **Caddyfile snippet** — TLS config is defined once in the `(duckdns_tls)` snippet and imported into each site block. When adding a new service, `import duckdns_tls` instead of repeating the `tls` block.
+- **`resolvers 8.8.8.8` in the TLS config** — Caddy's DNS-01 propagation check normally queries authoritative nameservers directly using Docker's internal resolver (`127.0.0.11`), which times out reaching external nameservers. Setting `resolvers 8.8.8.8` routes the propagation check through a public recursive resolver instead. Do not remove this.
+- **Shared `proxy` network** — created once on the host (`docker network create proxy`). All stacks declare it as `external: true`. Caddy reaches backend containers by container name across stacks.
 - **Syncthing** — uses `network_mode: host` for local device discovery; not on the `proxy` network. UI available on host port 8384.
-- **Secrets** — `.env` at repo root holds shared credentials. Sub-stacks load it with `--env-file .env`. Never hardcoded in compose files.
-- **Data dirs** — each service stores persistent data in its own subdirectory (`./vaultwarden/vwdata/`, `./minio/data/`, etc.). Directories tracked in git via `.empty` placeholder files.
+- **Secrets** — `.env` at repo root holds shared credentials. Per-service scripts pass it via `--env-file ../.env`. Never hardcoded in compose files.
+- **Data dirs** — each service stores persistent data in its own subdirectory. Tracked in git via `.empty` placeholder files; actual data is gitignored.
 
 ## Adding a New Service
 
-1. Create `./servicename/docker-compose.yml` with the service joining `proxy` as external
-2. Add a Caddyfile entry pointing to the container name and port
+1. Create `./servicename/docker-compose.yml` joining `proxy` as external
+2. Add a site block to `caddy/Caddyfile` using `import duckdns_tls`
 3. Reload Caddy: `docker exec caddy caddy reload --config /etc/caddy/Caddyfile`
-4. Start the stack: `docker compose --env-file ../.env -f servicename/docker-compose.yml up -d`
+4. Create `./servicename/up.sh` and `./servicename/down.sh` following the pattern of existing scripts
+5. Add the service to the root `./up.sh`
 
-For multi-container projects (e.g., app + database): expose only the web-facing container on `proxy`; put DB/cache on an internal-only network within that stack.
+For multi-container projects: expose only the web-facing container on `proxy`; put DB/cache on an internal-only network within that stack.

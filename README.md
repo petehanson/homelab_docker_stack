@@ -32,13 +32,13 @@ docker compose up -d
 docker compose --env-file .env -f pihole/docker-compose.yml up -d
 
 # Vaultwarden (password manager)
-docker compose --env-file .env -f vaultwarden/docker-compose.yml up -d
+docker compose --env-file .env -f vaultwarden/docker-compose.yml -f vaultwarden/docker-compose.override.yml up -d
 
 # MinIO (object storage)
-docker compose --env-file .env -f minio/docker-compose.yml up -d
+docker compose --env-file .env -f minio/docker-compose.yml -f minio/docker-compose.override.yml up -d
 
 # Syncthing (file sync)
-docker compose -f syncthing/docker-compose.yml up -d
+docker compose -f syncthing/docker-compose.yml -f syncthing/docker-compose.override.yml up -d
 ```
 
 ## DuckDNS and Caddy
