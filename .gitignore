@@ -11,6 +11,7 @@ caddy/data/caddy
 pihole/**/*
 !pihole/etc-pihole/.empty
 !pihole/docker-compose.yml
+!pihole/unbound.conf
 !pihole/up.sh
 !pihole/down.sh
 

@@ -1,5 +1,14 @@
 services:
 
+  unbound:
+    image: mvance/unbound:latest
+    container_name: pihole_unbound
+    restart: unless-stopped
+    volumes:
+      - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf:ro
+    networks:
+      - pihole_internal
+
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
@@ -8,20 +17,25 @@ services:
       - "53:53/udp"
     environment:
       TZ: 'America/Chicago'
-      PIHOLE_DNS_: 8.8.8.8;8.8.4.4
+      PIHOLE_DNS_: unbound#5335
       WEBPASSWORD: ${ADMIN_PASSWORD}
     shm_size: '256m'
     dns:
       - 127.0.0.1
-      - 8.8.8.8
     volumes:
       - ./etc-pihole:/etc/pihole
       - ./etc-dnsmasq.d:/etc/dnsmasq.d
+    depends_on:
+      - unbound
     restart: unless-stopped
     networks:
       - proxy
+      - pihole_internal
 
 networks:
   proxy:
     name: proxy
     external: true
+  pihole_internal:
+    driver: bridge
+    internal: true
