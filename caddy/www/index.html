@@ -41,13 +41,51 @@
         <!-- Shares Column -->
         <section class="column shares">
             <h2>Shares</h2>
-            <p>Placeholder text for shared files or directories.</p>
+            <div class="share-entry">
+                <strong>shared</strong>
+                <span class="share-path">smb://apollo/shared</span>
+                <span class="share-meta">Guest access &middot; /mnt/hddpool/shared</span>
+            </div>
+            <div class="share-entry">
+                <strong>sync</strong>
+                <span class="share-path">smb://apollo/sync</span>
+                <span class="share-meta">Auth required &middot; /mnt/hddpool/syncthing/data</span>
+            </div>
+            <div class="share-entry">
+                <strong>media</strong>
+                <span class="share-path">smb://apollo/media</span>
+                <span class="share-meta">@users group &middot; /mnt/hddpool/media</span>
+            </div>
+            <div class="share-entry">
+                <strong>homes</strong>
+                <span class="share-path">smb://apollo/homes</span>
+                <span class="share-meta">Auth required &middot; personal home dirs</span>
+            </div>
         </section>
 
         <!-- Information Column -->
         <section class="column information">
             <h2>Information</h2>
-            <p>Placeholder text for additional service or NAS-related information.</p>
+            <div class="info-group">
+                <strong>Host</strong>
+                <span>apollo &mdash; hansonhomelab1.duckdns.org</span>
+            </div>
+            <div class="info-group">
+                <strong>Proxy</strong>
+                <span>Caddy &middot; wildcard cert via DuckDNS DNS-01</span>
+            </div>
+            <div class="info-group">
+                <strong>DNS</strong>
+                <span>Pi-hole &middot; <a href="https://pihole.hansonhomelab1.duckdns.org/admin" target="_blank">admin</a></span>
+            </div>
+            <div class="info-group">
+                <strong>Syncthing UI</strong>
+                <span>Host port 8384 (host network mode)</span>
+            </div>
+            <div class="info-group">
+                <strong>Object Storage</strong>
+                <span>MinIO S3-compatible &middot; <a href="https://minio.hansonhomelab1.duckdns.org" target="_blank">console</a></span>
+            </div>
         </section>
     </main>
 </body>

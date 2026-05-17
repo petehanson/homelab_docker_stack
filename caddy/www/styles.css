@@ -69,3 +69,60 @@ p {
     margin: 0.5rem 0;
     line-height: 1.6;
 }
+
+.share-entry {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.share-entry:last-child {
+    border-bottom: none;
+}
+
+.share-entry strong {
+    font-size: 1rem;
+    color: #333;
+}
+
+.share-entry .share-path {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #005f73;
+    margin-top: 0.15rem;
+}
+
+.share-entry .share-meta {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 0.1rem;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.85rem;
+}
+
+.info-group strong {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #777;
+}
+
+.info-group span {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.info-group a {
+    color: #005f73;
+    text-decoration: none;
+}
+
+.info-group a:hover {
+    text-decoration: underline;
+}
