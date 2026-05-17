@@ -1,0 +1,14 @@
+services:
+
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    network_mode: host
+    volumes:
+      - ./config:/var/syncthing/config
+      - ./data:/var/syncthing/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped

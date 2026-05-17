@@ -1,45 +1,28 @@
-{$HOSTNAME}.duckdns.org {
+(duckdns_tls) {
     tls {
         dns duckdns {$TOKEN}
+        resolvers 8.8.8.8
     }
+}
+
+{$HOSTNAME}.duckdns.org {
+    import duckdns_tls
 
     root * /usr/share/caddy
     file_server
     encode gzip zstd
-    
+
     handle_path /vaultwarden* {
         reverse_proxy vaultwarden:80
     }
-
-    handle_path /nginx* {
-        reverse_proxy nginx:80
-    }
-
 }
 
 pihole.{$HOSTNAME}.duckdns.org {
-    tls {
-        dns duckdns {$TOKEN}
-    }
-
+    import duckdns_tls
     reverse_proxy pihole:80
 }
 
-
 minio.{$HOSTNAME}.duckdns.org {
-    tls {
-        dns duckdns {$TOKEN}
-    }
-
+    import duckdns_tls
     reverse_proxy minio:9001
 }
-
-/*
-shinobi.{$HOSTNAME}.duckdns.org {
-    tls {
-        dns duckdns {$TOKEN}
-    }
-
-    reverse_proxy shinobi:8080
-}
-*/

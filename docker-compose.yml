@@ -1,7 +1,6 @@
 services:
 
   caddy:
-    #image: petehanson/caddy-duckdns
     build:
       context: ./caddy
     container_name: caddy
@@ -15,104 +14,10 @@ services:
       - ./caddy/www:/usr/share/caddy:ro
       - ./caddy/data:/data
       - ./caddy/config:/config
-
-  #whoami:
-  #  image: "containous/whoami"
-  #  container_name: "whoami"
-  #  hostname: "whoami"
-
-  nginx:
-    image: nginx
-    container_name: "nginx"
-    hostname: "nginx"
-    restart: unless-stopped
-    volumes:
-      - ./nginx/html:/usr/share/nginx/html
-
-  vaultwarden:
-    image: vaultwarden/server:latest
-    container_name: "vaultwarden"
-    hostname: "vaultwarden"
-    ports:
-      - "3012:3012"
-    volumes:
-      - ./vaultwarden/vwdata:/data
-    restart: unless-stopped
-
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-    environment:
-      TZ: 'America/Chicago'
-      PIHOLE_DNS_: 8.8.8.8;8.8.4.4
-    # Volumes store your data between container upgrades
-    shm_size: '256m'
-    dns:
-      - 127.0.0.1
-      - 8.8.8.8
-
-    volumes:
-      - './pihole/etc-pihole:/etc/pihole'
-      - './pihole/etc-dnsmasq.d:/etc/dnsmasq.d'
-    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-    restart: unless-stopped
-
-  minio:
-    image: quay.io/minio/minio
-    container_name: "minio"
-    ports:
-      - "9000:9000/tcp"
-      - "9001:9001/tcp"
-
-    volumes:
-      - ./minio/data:/data
-    command: server /data --console-address ":9001"
-    restart: always
-
-#  shinobi-sql:
-#    image: mysql:lts
-#    volumes:
-#      - ./ShinobiDocker/ShinobiSQL:/var/lib/mysql
-#      - ./ShinobiDocker/mysql-init:/docker-entrypoint-initdb.d
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=rootpassword
-#      - MYSQL_DATABASE=ccio
-#    restart: unless-stopped
-#
-#  shinobi:
-#    build:
-#      context: ./ShinobiDocker
-#      args:
-#        SHINOBI_BRANCH: dev
-#    volumes:
-#      - /dev/shm/ShinobiRAM:/dev/shm/streams
-#      - ./ShinobiDocker/Shinobi:/home/Shinobi
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      - HOME=/home/Shinobi
-#      - DB_HOST=shinobi-sql
-#      - DB_DATABASE=ccio
-#      - SHINOBI_UPDATE=false
-#    restart: unless-stopped
-
-  syncthing:
-    image: syncthing/syncthing:latest
-    container_name: syncthing
-    hostname: syncthing
-    network_mode: host  # required for local discovery and sync
-    volumes:
-      - ./syncthing/config:/var/syncthing/config
-      - ./syncthing/data:/var/syncthing/data
-    environment:
-      - PUID=1000
-      - PGID=1000
-    restart: unless-stopped
+    networks:
+      - proxy
 
 networks:
-  default:
-    name: caddy_net
+  proxy:
+    name: proxy
+    external: true

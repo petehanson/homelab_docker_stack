@@ -1,0 +1,27 @@
+services:
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    environment:
+      TZ: 'America/Chicago'
+      PIHOLE_DNS_: 8.8.8.8;8.8.4.4
+      WEBPASSWORD: ${ADMIN_PASSWORD}
+    shm_size: '256m'
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+    volumes:
+      - ./etc-pihole:/etc/pihole
+      - ./etc-dnsmasq.d:/etc/dnsmasq.d
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true

@@ -3,12 +3,22 @@ docker-compose.override.yml
 
 caddy/config/caddy
 caddy/data/caddy
+
 pihole/**/*
 !pihole/etc-pihole/.empty
+!pihole/docker-compose.yml
+
 vaultwarden/**/*
 !vaultwarden/vwdata/.empty
+!vaultwarden/docker-compose.yml
+
 minio/data/**/*
 !minio/data/.empty
+
+syncthing/config/**/*
+!syncthing/config/.empty
+syncthing/data/**/*
+!syncthing/data/.empty
+
 ShinobiDocker/Shinobi/**/*
 ShinobiDocker/ShinobiSQL/**/*
-
