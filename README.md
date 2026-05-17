@@ -52,3 +52,50 @@ Caddy uses the DuckDNS DNS-01 ACME challenge to obtain valid Let's Encrypt certi
 ## Vaultwarden
 
 Vaultwarden data lives in `./vaultwarden/vwdata/`. Accessible at `https://{HOSTNAME}.duckdns.org/vaultwarden`.
+
+## Project NOMAD
+
+NOMAD requires a one-time setup step before first run:
+
+```bash
+# Default paths (/opt/docker/project-nomad and /opt/project-nomad)
+./nomad/setup.sh
+
+# Or override paths for a NAS or custom data directory
+NOMAD_DATA_DIR=/mnt/ssdpool/container-data/homelab_docker_stack/nomad \
+NOMAD_REPO_DIR=/mnt/ssdpool/container-data/homelab_docker_stack/project-nomad \
+./nomad/setup.sh
+```
+
+Then configure the override file and add credentials to `.env`:
+
+```bash
+cp nomad/docker-compose.override.yml.template nomad/docker-compose.override.yml
+# edit nomad/docker-compose.override.yml with your URL and volume paths
+
+# add to .env:
+# NOMAD_APP_KEY=
+# NOMAD_DB_PASSWORD=
+# NOMAD_MYSQL_ROOT_PASSWORD=
+# NOMAD_URL=https://nomad.yourhostname.duckdns.org
+```
+
+Start the stack:
+
+```bash
+./nomad/up.sh
+```
+
+## Caddy
+
+Reload Caddy config after editing the Caddyfile (no restart needed):
+
+```bash
+docker exec caddy caddy reload --config /etc/caddy/Caddyfile
+```
+
+Rebuild and restart Caddy after changes to the Dockerfile or when adding a new DNS plugin:
+
+```bash
+docker compose build caddy && docker compose up -d caddy
+```

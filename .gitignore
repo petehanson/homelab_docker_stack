@@ -3,6 +3,7 @@ docker-compose.override.yml
 vaultwarden/docker-compose.override.yml
 minio/docker-compose.override.yml
 syncthing/docker-compose.override.yml
+nomad/docker-compose.override.yml
 
 caddy/config/caddy
 caddy/data/caddy
@@ -30,6 +31,12 @@ syncthing/data/**/*
 !syncthing/data/.empty
 !syncthing/up.sh
 !syncthing/down.sh
+
+!nomad/docker-compose.yml
+!nomad/docker-compose.override.yml.template
+!nomad/setup.sh
+!nomad/up.sh
+!nomad/down.sh
 
 ShinobiDocker/Shinobi/**/*
 ShinobiDocker/ShinobiSQL/**/*

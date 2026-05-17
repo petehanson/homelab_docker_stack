@@ -1,0 +1,25 @@
+services:
+  admin:
+    environment:
+      # Full public URL for the NOMAD admin UI
+      - URL=https://nomad.YOUR_HOSTNAME.duckdns.org
+    volumes:
+      # Adjust these paths if NOMAD_REPO_DIR was overridden during setup
+      - /opt/docker/project-nomad/install/entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - /opt/docker/project-nomad/install/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+      # Adjust if NOMAD_DATA_DIR was overridden during setup
+      - /opt/project-nomad/storage:/app/storage
+
+  mysql:
+    volumes:
+      - /opt/project-nomad/mysql:/var/lib/mysql
+
+  redis:
+    volumes:
+      - /opt/project-nomad/redis:/data
+
+  updater:
+    build:
+      context: /opt/docker/project-nomad/install/sidecar-updater
+    volumes:
+      - /opt/project-nomad:/opt/project-nomad
