@@ -33,4 +33,14 @@
     handle @dozzle {
         reverse_proxy nomad_dozzle:8080
     }
+
+    @immich host immich.{$HOSTNAME}.duckdns.org
+    handle @immich {
+        reverse_proxy immich_server:2283
+    }
+
+    @openwebui host ai.{$HOSTNAME}.duckdns.org
+    handle @openwebui {
+        reverse_proxy open_webui:8080
+    }
 }

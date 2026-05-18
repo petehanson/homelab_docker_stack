@@ -33,6 +33,21 @@ syncthing/data/**/*
 !syncthing/up.sh
 !syncthing/down.sh
 
+openwebui/docker-compose.override.yml
+immich/docker-compose.override.yml
+
+!openwebui/docker-compose.yml
+!openwebui/docker-compose.override.yml.template
+!openwebui/setup.sh
+!openwebui/up.sh
+!openwebui/down.sh
+
+!immich/docker-compose.yml
+!immich/docker-compose.override.yml.template
+!immich/setup.sh
+!immich/up.sh
+!immich/down.sh
+
 !nomad/docker-compose.yml
 !nomad/docker-compose.override.yml.template
 !nomad/setup.sh

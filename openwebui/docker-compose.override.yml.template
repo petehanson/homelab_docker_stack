@@ -1,0 +1,28 @@
+services:
+  open-webui:
+    volumes:
+      # Override if data lives somewhere other than /opt/openwebui/data
+      - /opt/openwebui/data:/app/backend/data
+
+  ollama:
+    volumes:
+      # Override if model storage lives somewhere other than /opt/openwebui/ollama
+      # Note: models can be several GB each — point this at your large storage pool
+      - /opt/openwebui/ollama:/root/.ollama
+
+    # Uncomment to enable Nvidia GPU acceleration for Ollama
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+# To use a remote Ollama instance instead of the local container:
+#   1. Set OLLAMA_BASE_URL=http://192.168.x.x:11434 in .env
+#   2. Remove or comment out the ollama service above
+#
+# To use an OpenAI-compatible API (no Ollama needed):
+#   1. Set OPENAI_API_KEY and OPENAI_API_BASE_URL in .env
+#   2. Set OLLAMA_BASE_URL= (empty) to disable Ollama in the UI

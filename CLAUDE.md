@@ -15,6 +15,8 @@ A collection of self-hosted services, each in its own Docker Compose stack, all 
 | Vaultwarden | `./vaultwarden/docker-compose.yml` | vaultwarden |
 | MinIO | `./minio/docker-compose.yml` | minio |
 | Syncthing | `./syncthing/docker-compose.yml` | syncthing |
+| Immich | `./immich/docker-compose.yml` | immich-server, immich-machine-learning, postgres, redis |
+| Open WebUI | `./openwebui/docker-compose.yml` | open-webui, ollama |
 
 ## Common Commands
 

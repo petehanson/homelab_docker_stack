@@ -1,0 +1,15 @@
+services:
+  immich-server:
+    volumes:
+      # Override if uploads live somewhere other than /opt/immich/uploads
+      - /opt/immich/uploads:/usr/src/app/upload
+
+  immich-machine-learning:
+    volumes:
+      # Override if model cache lives somewhere other than /opt/immich/model-cache
+      - /opt/immich/model-cache:/cache
+
+  immich_postgres:
+    volumes:
+      # Override if postgres data lives somewhere other than /opt/immich/postgres
+      - /opt/immich/postgres:/var/lib/postgresql/data

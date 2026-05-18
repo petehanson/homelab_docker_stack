@@ -86,6 +86,17 @@ Start the stack:
 ./nomad/up.sh
 ```
 
+## Future Services
+
+### Music / Sonos
+
+- **Navidrome** — lightweight music server with Subsonic API; works with mobile apps (Symfonium, Substreamer) and Sonos via the **Bonob** sidecar (bridges Navidrome to Sonos as a music plugin)
+- Both run as containers and follow the same multi-stack pattern as the existing services
+
+### Video
+
+- **Jellyfin** — open source media server for video libraries; handles transcoding, metadata, and has built-in DLNA/UPnP support for local playback
+
 ## Caddy
 
 Reload Caddy config after editing the Caddyfile (no restart needed):
