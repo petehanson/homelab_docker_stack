@@ -5,6 +5,9 @@ networks:
     external: true
   nomad_internal:
     driver: bridge
+  project-nomad_default:
+    name: project-nomad_default
+    driver: bridge
 
 services:
 
@@ -52,6 +55,7 @@ services:
     networks:
       - proxy
       - nomad_internal
+      - project-nomad_default
 
   dozzle:
     image: amir20/dozzle:v10.0
