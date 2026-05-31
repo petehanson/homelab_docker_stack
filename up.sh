@@ -18,4 +18,13 @@ docker compose --env-file "$ROOT/.env" -f "$ROOT/minio/docker-compose.yml" -f "$
 echo "Starting syncthing..."
 docker compose -f "$ROOT/syncthing/docker-compose.yml" -f "$ROOT/syncthing/docker-compose.override.yml" up -d
 
+echo "Starting immich..."
+docker compose --env-file "$ROOT/.env" -f "$ROOT/immich/docker-compose.yml" -f "$ROOT/immich/docker-compose.override.yml" up -d
+
+echo "Starting openwebui..."
+docker compose --env-file "$ROOT/.env" -f "$ROOT/openwebui/docker-compose.yml" -f "$ROOT/openwebui/docker-compose.override.yml" up -d
+
+echo "Starting nomad..."
+docker compose --env-file "$ROOT/.env" -f "$ROOT/nomad/docker-compose.yml" -f "$ROOT/nomad/docker-compose.override.yml" up -d
+
 echo "All services up."
