@@ -4,27 +4,27 @@ set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 echo "Starting caddy..."
-docker compose -f "$ROOT/docker-compose.yml" up -d
+"$ROOT/caddy/up.sh"
 
 echo "Starting pihole..."
-docker compose --env-file "$ROOT/.env" -f "$ROOT/pihole/docker-compose.yml" up -d
+"$ROOT/pihole/up.sh"
 
 echo "Starting vaultwarden..."
-docker compose --env-file "$ROOT/.env" -f "$ROOT/vaultwarden/docker-compose.yml" -f "$ROOT/vaultwarden/docker-compose.override.yml" up -d
+"$ROOT/vaultwarden/up.sh"
 
 echo "Starting minio..."
-docker compose --env-file "$ROOT/.env" -f "$ROOT/minio/docker-compose.yml" -f "$ROOT/minio/docker-compose.override.yml" up -d
+"$ROOT/minio/up.sh"
 
 echo "Starting syncthing..."
-docker compose -f "$ROOT/syncthing/docker-compose.yml" -f "$ROOT/syncthing/docker-compose.override.yml" up -d
+"$ROOT/syncthing/up.sh"
 
 echo "Starting immich..."
-docker compose --env-file "$ROOT/.env" -f "$ROOT/immich/docker-compose.yml" -f "$ROOT/immich/docker-compose.override.yml" up -d
+"$ROOT/immich/up.sh"
 
 echo "Starting openwebui..."
-docker compose --env-file "$ROOT/.env" -f "$ROOT/openwebui/docker-compose.yml" -f "$ROOT/openwebui/docker-compose.override.yml" up -d
+"$ROOT/openwebui/up.sh"
 
 echo "Starting nomad..."
-docker compose --env-file "$ROOT/.env" -f "$ROOT/nomad/docker-compose.yml" -f "$ROOT/nomad/docker-compose.override.yml" up -d
+"$ROOT/nomad/up.sh"
 
 echo "All services up."

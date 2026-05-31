@@ -4,27 +4,27 @@ set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 echo "Stopping nomad..."
-docker compose -f "$ROOT/nomad/docker-compose.yml" down
+"$ROOT/nomad/down.sh"
 
 echo "Stopping openwebui..."
-docker compose -f "$ROOT/openwebui/docker-compose.yml" down
+"$ROOT/openwebui/down.sh"
 
 echo "Stopping immich..."
-docker compose -f "$ROOT/immich/docker-compose.yml" down
+"$ROOT/immich/down.sh"
 
 echo "Stopping syncthing..."
-docker compose -f "$ROOT/syncthing/docker-compose.yml" down
+"$ROOT/syncthing/down.sh"
 
 echo "Stopping minio..."
-docker compose -f "$ROOT/minio/docker-compose.yml" down
+"$ROOT/minio/down.sh"
 
 echo "Stopping vaultwarden..."
-docker compose -f "$ROOT/vaultwarden/docker-compose.yml" down
+"$ROOT/vaultwarden/down.sh"
 
 echo "Stopping pihole..."
-docker compose -f "$ROOT/pihole/docker-compose.yml" down
+"$ROOT/pihole/down.sh"
 
 echo "Stopping caddy..."
-docker compose -f "$ROOT/docker-compose.yml" down
+"$ROOT/caddy/down.sh"
 
 echo "All services down."
