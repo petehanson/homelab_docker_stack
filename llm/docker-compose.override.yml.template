@@ -1,0 +1,22 @@
+services:
+  ollama:
+    volumes:
+      # Override if model storage lives somewhere other than /mnt/hddpool/models/ollama
+      # Note: models can be several GB each — point this at your large storage pool
+      - /mnt/hddpool/models/ollama:/root/.ollama
+
+    # Uncomment to enable Nvidia GPU acceleration
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+    # Uncomment to enable AMD GPU acceleration
+    # devices:
+    #   - /dev/kfd
+    #   - /dev/dri
+    # group_add:
+    #   - video

@@ -3,8 +3,6 @@ name: openwebui
 networks:
   proxy:
     external: true
-  openwebui_internal:
-    driver: bridge
 
 services:
 
@@ -21,13 +19,3 @@ services:
       - OPENAI_API_BASE_URL=${OPENAI_API_BASE_URL:-}
     networks:
       - proxy
-      - openwebui_internal
-
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    restart: unless-stopped
-    volumes:
-      - /opt/openwebui/ollama:/root/.ollama
-    networks:
-      - openwebui_internal

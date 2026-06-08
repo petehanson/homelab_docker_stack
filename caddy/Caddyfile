@@ -43,4 +43,9 @@
     handle @openwebui {
         reverse_proxy open_webui:8080
     }
+
+    @ollama host ollama.{$HOSTNAME}.duckdns.org
+    handle @ollama {
+        reverse_proxy ollama:11434
+    }
 }

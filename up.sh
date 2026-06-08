@@ -21,6 +21,9 @@ echo "Starting syncthing..."
 echo "Starting immich..."
 "$ROOT/immich/up.sh"
 
+echo "Starting llm..."
+"$ROOT/llm/up.sh"
+
 echo "Starting openwebui..."
 "$ROOT/openwebui/up.sh"
 

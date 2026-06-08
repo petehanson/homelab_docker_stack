@@ -9,6 +9,9 @@ echo "Stopping nomad..."
 echo "Stopping openwebui..."
 "$ROOT/openwebui/down.sh"
 
+echo "Stopping llm..."
+"$ROOT/llm/down.sh"
+
 echo "Stopping immich..."
 "$ROOT/immich/down.sh"
 
