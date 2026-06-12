@@ -48,4 +48,9 @@
     handle @ollama {
         reverse_proxy ollama:11434
     }
+
+    @searxng host search.{$HOSTNAME}.duckdns.org
+    handle @searxng {
+        reverse_proxy searxng:8080
+    }
 }

@@ -30,4 +30,7 @@ echo "Starting openwebui..."
 echo "Starting nomad..."
 "$ROOT/nomad/up.sh"
 
+echo "Starting searxng..."
+"$ROOT/searxng/up.sh"
+
 echo "All services up."
