@@ -92,6 +92,15 @@
                 <strong>Object Storage</strong>
                 <span>MinIO S3-compatible &middot; <a href="https://minio.hansonhomelab1.duckdns.org" target="_blank">console</a></span>
             </div>
+            <div class="info-group">
+                <strong>SearXNG API</strong>
+                <span>
+                    <code>GET https://search.hansonhomelab1.duckdns.org/search</code><br>
+                    Params: <code>q</code> (query), <code>format=json</code>, <code>language</code>, <code>categories</code><br>
+                    Example:<br>
+                    <code>curl -s "https://search.hansonhomelab1.duckdns.org/search?q=test&amp;format=json" | jq .</code>
+                </span>
+            </div>
         </section>
     </main>
 </body>
