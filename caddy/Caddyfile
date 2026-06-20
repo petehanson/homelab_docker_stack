@@ -60,6 +60,7 @@
             transport http {
                 tls_insecure_skip_verify
             }
+            flush_interval -1
         }
     }
 }
