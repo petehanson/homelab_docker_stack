@@ -1,0 +1,9 @@
+services:
+  crafty:
+    volumes:
+      # Override if crafty data lives somewhere other than /opt/crafty
+      - /opt/crafty/backups:/crafty/backups
+      - /opt/crafty/logs:/crafty/logs
+      - /opt/crafty/servers:/crafty/servers
+      - /opt/crafty/config:/crafty/app/config
+      - /opt/crafty/import:/crafty/import

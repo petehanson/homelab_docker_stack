@@ -54,5 +54,13 @@ immich/docker-compose.override.yml
 !nomad/up.sh
 !nomad/down.sh
 
+crafty/docker-compose.override.yml
+crafty/docker/**/*
+
+!crafty/docker-compose.yml
+!crafty/docker-compose.override.yml.template
+!crafty/up.sh
+!crafty/down.sh
+
 ShinobiDocker/Shinobi/**/*
 ShinobiDocker/ShinobiSQL/**/*

@@ -33,4 +33,7 @@ echo "Starting nomad..."
 echo "Starting searxng..."
 "$ROOT/searxng/up.sh"
 
+echo "Starting crafty..."
+"$ROOT/crafty/up.sh"
+
 echo "All services up."

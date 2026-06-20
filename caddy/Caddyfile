@@ -53,4 +53,13 @@
     handle @searxng {
         reverse_proxy searxng:8080
     }
+
+    @crafty host crafty.{$HOSTNAME}.duckdns.org
+    handle @crafty {
+        reverse_proxy https://crafty_container:8443 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
+    }
 }
