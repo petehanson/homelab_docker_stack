@@ -15,6 +15,9 @@ echo "Starting vaultwarden..."
 echo "Starting minio..."
 "$ROOT/minio/up.sh"
 
+echo "Starting garage..."
+"$ROOT/garage/up.sh"
+
 echo "Starting syncthing..."
 "$ROOT/syncthing/up.sh"
 

@@ -14,6 +14,7 @@ A collection of self-hosted services, each in its own Docker Compose stack, all 
 | Pi-hole | `./pihole/docker-compose.yml` | pihole |
 | Vaultwarden | `./vaultwarden/docker-compose.yml` | vaultwarden |
 | MinIO | `./minio/docker-compose.yml` | minio |
+| Garage | `./garage/docker-compose.yml` | garage (S3-compatible storage, single-node) |
 | Syncthing | `./syncthing/docker-compose.yml` | syncthing |
 | Immich | `./immich/docker-compose.yml` | immich-server, immich-machine-learning, postgres, redis |
 | LLM | `./llm/docker-compose.yml` | ollama (port 11434 on proxy network + LAN) |
@@ -52,6 +53,8 @@ Files that are gitignored and must be created before first run:
 - `vaultwarden/docker-compose.override.yml` — host-specific volume paths for vaultwarden
 - `minio/docker-compose.override.yml` — host-specific volume paths for minio
 - `syncthing/docker-compose.override.yml` — host-specific volume paths for syncthing
+- `garage/docker-compose.override.yml` — copy from `docker-compose.override.yml.template`; host-specific volume paths for garage
+- `garage/garage.toml` — copy from `garage.toml.template`; fill in `rpc_secret`, `admin_token`, `metrics_token` (each `openssl rand -hex 32`). See `garage/setup.sh` for the one-time cluster layout bootstrap required after first `up.sh`.
 
 The per-service override files follow the same pattern — only override what differs on the host machine (typically volume paths).
 
@@ -61,6 +64,7 @@ The per-service override files follow the same pattern — only override what di
 - **`resolvers 8.8.8.8` in the TLS config** — Caddy's DNS-01 propagation check normally queries authoritative nameservers directly using Docker's internal resolver (`127.0.0.11`), which times out reaching external nameservers. Setting `resolvers 8.8.8.8` routes the propagation check through a public recursive resolver instead. Do not remove this.
 - **Shared `proxy` network** — created once on the host (`docker network create proxy`). All stacks declare it as `external: true`. Caddy reaches backend containers by container name across stacks.
 - **Syncthing** — uses `network_mode: host` for local device discovery; not on the `proxy` network. UI available on host port 8384.
+- **Garage** — single-node S3-compatible object storage, replacing the MinIO use case for new backup targets. Like MinIO's S3 port (9000), Garage's S3 API (3900) and admin API (3903) are published directly as host ports rather than routed through Caddy — there's no browser UI to reverse-proxy, and S3/admin clients connect over the LAN. Access keys and buckets are managed via `docker exec garage /garage ...` (see `garage/setup.sh`), not env-var credentials like MinIO's `ADMIN_USER`/`ADMIN_PASSWORD`.
 - **Secrets** — `.env` at repo root holds shared credentials. Per-service scripts pass it via `--env-file ../.env`. Never hardcoded in compose files.
 - **Data dirs** — each service stores persistent data in its own subdirectory. Tracked in git via `.empty` placeholder files; actual data is gitignored.
 

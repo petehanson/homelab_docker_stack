@@ -62,5 +62,19 @@ crafty/docker/**/*
 !crafty/up.sh
 !crafty/down.sh
 
+garage/docker-compose.override.yml
+garage/garage.toml
+garage/meta/**/*
+garage/data/**/*
+
+!garage/docker-compose.yml
+!garage/docker-compose.override.yml.template
+!garage/garage.toml.template
+!garage/setup.sh
+!garage/up.sh
+!garage/down.sh
+!garage/meta/.empty
+!garage/data/.empty
+
 ShinobiDocker/Shinobi/**/*
 ShinobiDocker/ShinobiSQL/**/*

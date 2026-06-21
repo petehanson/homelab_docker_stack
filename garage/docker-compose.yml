@@ -1,0 +1,21 @@
+services:
+
+  garage:
+    image: dxflrs/garage:v1.0.1
+    container_name: garage
+    hostname: garage
+    ports:
+      - "3900:3900/tcp" # S3 API
+      - "3903:3903/tcp" # Admin API
+    volumes:
+      - ./garage.toml:/etc/garage.toml:ro
+      - ./meta:/var/lib/garage/meta
+      - ./data:/var/lib/garage/data
+    restart: always
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true

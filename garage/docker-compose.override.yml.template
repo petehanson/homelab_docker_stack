@@ -1,0 +1,6 @@
+services:
+  garage:
+    volumes:
+      # Override if garage data lives somewhere other than /opt/garage
+      - /opt/garage/meta:/var/lib/garage/meta
+      - /opt/garage/data:/var/lib/garage/data
