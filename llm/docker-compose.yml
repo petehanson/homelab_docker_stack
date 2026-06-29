@@ -6,12 +6,18 @@ networks:
 
 services:
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:rocm
     container_name: ollama
     restart: unless-stopped
     ports:
       - "11434:11434"
     volumes:
       - /mnt/hddpool/models/ollama:/root/.ollama
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+      - render
     networks:
       - proxy
