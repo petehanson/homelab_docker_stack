@@ -7,15 +7,12 @@ networks:
 services:
   ollama:
     image: ollama/ollama:rocm
-    runtime: runc
     container_name: ollama
     restart: unless-stopped
     ports:
       - "11434:11434"
     volumes:
       - /mnt/hddpool/models/ollama:/root/.ollama
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=void
     devices:
       - /dev/kfd
       - /dev/dri
