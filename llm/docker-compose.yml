@@ -17,7 +17,7 @@ services:
       - /dev/kfd
       - /dev/dri
     group_add:
-      - video
-      - render
+      - "989"   # render — replace with actual GID from: getent group render
+      - "985"   # video  — replace with actual GID from: getent group video
     networks:
       - proxy
