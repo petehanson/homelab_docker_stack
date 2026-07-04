@@ -20,3 +20,8 @@ services:
     #   - /dev/dri
     # group_add:
     #   - video
+
+  llama-qwen:
+    volumes:
+      # Override to point at your actual model storage path
+      - /storage2/llama.cpp/lmstudio-community/Qwen3.6-35B-A3B-GGUF:/models

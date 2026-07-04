@@ -49,6 +49,11 @@
         reverse_proxy ollama:11434
     }
 
+    @llama_qwen host llama-qwen.{$HOSTNAME}.duckdns.org
+    handle @llama_qwen {
+        reverse_proxy llama-qwen:8080
+    }
+
     @searxng host search.{$HOSTNAME}.duckdns.org
     handle @searxng {
         reverse_proxy searxng:8080

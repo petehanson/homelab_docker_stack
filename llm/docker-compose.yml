@@ -21,3 +21,42 @@ services:
       - "985"   # video  — replace with actual GID from: getent group video
     networks:
       - proxy
+
+  # llama.cpp server-vulkan, one container per hosted model. Not published to
+  # the host — reached via the proxy network, either from other containers as
+  # http://llama-<name>:8080 or externally through Caddy. To add another
+  # model, copy this block, rename the service/container, and point volumes
+  # + command at the new model file (override the volume path per-host in
+  # docker-compose.override.yml, same as ollama above).
+  #
+  # `profiles` keeps this out of the default `up`/`up.sh` — start it manually
+  # with: docker compose --profile llama up -d llama-qwen
+  # Once started, restart: unless-stopped keeps it running across reboots
+  # until you explicitly stop/down it.
+  llama-qwen:
+    image: ghcr.io/ggml-org/llama.cpp:server-vulkan
+    container_name: llama-qwen
+    profiles:
+      - llama
+    restart: unless-stopped
+    devices:
+      - /dev/dri
+    group_add:
+      - "989"   # render — from: getent group render
+      - "986"   # video  — from: getent group video
+    volumes:
+      - /mnt/hddpool/models/llama.cpp/lmstudio-community/Qwen3.6-35B-A3B-GGUF:/models
+    command:
+      - -m
+      - /models/Qwen3.6-35B-A3B-Q4_K_M.gguf
+      - -ngl
+      - "999"
+      - --n-cpu-moe
+      - "35"
+      - -c
+      - "128000"
+      - --no-mmap
+      - --host
+      - 0.0.0.0
+    networks:
+      - proxy
