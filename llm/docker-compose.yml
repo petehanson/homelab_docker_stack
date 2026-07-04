@@ -51,11 +51,11 @@ services:
       - /models/Qwen3.6-35B-A3B-Q4_K_M.gguf
       - -ngl
       - "999"
-      - --n-cpu-moe
-      - "35"
+      #- --n-cpu-moe
+      #- "35"
       - -c
-      - "128000"
-      - --no-mmap
+      - "256000"
+      #- --no-mmap
       - --host
       - 0.0.0.0
     networks:
