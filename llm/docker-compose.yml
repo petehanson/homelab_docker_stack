@@ -51,7 +51,7 @@ services:
       - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
       - --alias
       - "Qwen3.6:35b-MTP"
-      - ngl
+      - -ngl
       - "999"
       - --spec-type
       - "draft-mtp"
@@ -83,8 +83,10 @@ services:
       - /models/models--google--gemma-4-E2B-it-qat-q4_0-gguf/snapshots/1894d1fc0a19d86697abd40483f5983c867df03f/gemma-4-E2B_q4_0-it.gguf
       - --alias
       - "Gemma4:e2b-Q4_0"
-      - ngl
+      - -ngl
       - "999"
+      - --chat-template-kwargs
+      - '{"enable_thinking": false}'
       - -c
       - "64000"
       - --host
