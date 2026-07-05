@@ -33,7 +33,7 @@ services:
   # with: docker compose --profile llama up -d llama-qwen
   # Once started, restart: unless-stopped keeps it running across reboots
   # until you explicitly stop/down it.
-  llama-qwen:
+  llama-coder:
     image: ghcr.io/ggml-org/llama.cpp:server-vulkan
     container_name: llama-qwen
     profiles:
@@ -45,12 +45,16 @@ services:
       - "989"   # render — from: getent group render
       - "986"   # video  — from: getent group video
     volumes:
-      - /mnt/hddpool/models/llama.cpp/lmstudio-community/Qwen3.6-35B-A3B-GGUF:/models
+      - /storage2/llama.cpp:/models
     command:
       - -m
-      - /models/Qwen3.6-35B-A3B-Q4_K_M.gguf
-      - -ngl
+      - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
+      - ngl
       - "999"
+      - --spec-type
+      - "draft-mtp"
+      - --spec-draft-n-max
+      - "3"
       #- --n-cpu-moe
       #- "35"
       - -c
@@ -60,3 +64,36 @@ services:
       - 0.0.0.0
     networks:
       - proxy
+
+# running an MTP model
+  # llama-qwen:
+  #   image: ghcr.io/ggml-org/llama.cpp:server-vulkan
+  #   container_name: llama-qwen
+  #   profiles:
+  #     - llama
+  #   restart: unless-stopped
+  #   devices:
+  #     - /dev/dri
+  #   group_add:
+  #     - "989"   # render — from: getent group render
+  #     - "986"   # video  — from: getent group video
+  #   volumes:
+  #     - /mnt/hddpool/models/llama.cpp/lmstudio-community/Qwen3.6-35B-A3B-GGUF:/models
+  #   command:
+  #     - -m
+  #     - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
+  #     - -ngl
+  #     - "999"
+  #     - --spec-type
+  #     - "draft-mtp"
+  #     - --spec-draft-n-max
+  #     - "3"
+  #     #- --n-cpu-moe
+  #     #- "35"
+  #     - -c
+  #     - "256000"
+  #     #- --no-mmap
+  #     - --host
+  #     - 0.0.0.0
+  #   networks:
+  #     - proxy
