@@ -54,6 +54,11 @@
         reverse_proxy llama-coder:8080
     }
 
+    @llama_mini host llama-mini.{$HOSTNAME}.duckdns.org
+    handle @llama_mini {
+        reverse_proxy llama-mini:8080
+    }
+
     @searxng host search.{$HOSTNAME}.duckdns.org
     handle @searxng {
         reverse_proxy searxng:8080
