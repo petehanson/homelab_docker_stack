@@ -35,9 +35,9 @@ services:
   # until you explicitly stop/down it.
   llama-coder:
     image: ghcr.io/ggml-org/llama.cpp:server-vulkan
-    container_name: llama-qwen
+    container_name: llama-coder
     profiles:
-      - llama
+      - llama-coder
     restart: unless-stopped
     devices:
       - /dev/dri
@@ -49,6 +49,8 @@ services:
     command:
       - -m
       - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
+      - --alias
+      - "Qwen3.6:35b-MTP"
       - ngl
       - "999"
       - --spec-type
@@ -65,35 +67,27 @@ services:
     networks:
       - proxy
 
-# running an MTP model
-  # llama-qwen:
-  #   image: ghcr.io/ggml-org/llama.cpp:server-vulkan
-  #   container_name: llama-qwen
-  #   profiles:
-  #     - llama
-  #   restart: unless-stopped
-  #   devices:
-  #     - /dev/dri
-  #   group_add:
-  #     - "989"   # render — from: getent group render
-  #     - "986"   # video  — from: getent group video
-  #   volumes:
-  #     - /mnt/hddpool/models/llama.cpp/lmstudio-community/Qwen3.6-35B-A3B-GGUF:/models
-  #   command:
-  #     - -m
-  #     - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
-  #     - -ngl
-  #     - "999"
-  #     - --spec-type
-  #     - "draft-mtp"
-  #     - --spec-draft-n-max
-  #     - "3"
-  #     #- --n-cpu-moe
-  #     #- "35"
-  #     - -c
-  #     - "256000"
-  #     #- --no-mmap
-  #     - --host
-  #     - 0.0.0.0
-  #   networks:
-  #     - proxy
+  llama-mini:
+    image: ghcr.io/ggml-org/llama.cpp:server-vulkan
+    container_name: llama-mini
+    restart: unless-stopped
+    devices:
+      - /dev/dri
+    group_add:
+      - "989"   # render — from: getent group render
+      - "986"   # video  — from: getent group video
+    volumes:
+      - /storage2/llama.cpp:/models
+    command:
+      - -m
+      - /models/models--google--gemma-4-E2B-it-qat-q4_0-gguf/snapshots/1894d1fc0a19d86697abd40483f5983c867df03f/gemma-4-E2B_q4_0-it.gguf
+      - --alias
+      - "Gemma4:e2b-Q4_0"
+      - ngl
+      - "999"
+      - -c
+      - "64000"
+      - --host
+      - 0.0.0.0
+    networks:
+      - proxy
