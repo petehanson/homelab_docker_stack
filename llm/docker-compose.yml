@@ -8,6 +8,8 @@ services:
   ollama:
     image: ollama/ollama:rocm
     container_name: ollama
+    profiles:
+        - ollama
     restart: unless-stopped
     ports:
       - "11434:11434"
@@ -36,8 +38,6 @@ services:
   llama-coder:
     image: ghcr.io/ggml-org/llama.cpp:server-vulkan
     container_name: llama-coder
-    profiles:
-      - llama-coder
     restart: unless-stopped
     devices:
       - /dev/dri
