@@ -50,7 +50,7 @@ services:
       - -m
       - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
       - --alias
-      - "Qwen3.6:35b-MTP"
+      - "Qwen3.6:27b-MTP"
       - -ngl
       - "999"
       - --spec-type
