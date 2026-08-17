@@ -35,6 +35,39 @@ services:
   # with: docker compose --profile llama up -d llama-qwen
   # Once started, restart: unless-stopped keeps it running across reboots
   # until you explicitly stop/down it.
+  # llama-coder:
+  #   image: ghcr.io/ggml-org/llama.cpp:server-vulkan
+  #   container_name: llama-coder
+  #   restart: unless-stopped
+  #   devices:
+  #     - /dev/dri
+  #   group_add:
+  #     - "989"   # render — from: getent group render
+  #     - "986"   # video  — from: getent group video
+  #   volumes:
+  #     - /storage2/llama.cpp:/models
+  #   command:
+  #     - -m
+  #     - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
+
+  #     - --alias
+  #     - "Qwen3.6:27b-MTP"
+  #     - -ngl
+  #     - "999"
+  #     - --spec-type
+  #     - "draft-mtp"
+  #     - --spec-draft-n-max
+  #     - "3"
+  #     #- --n-cpu-moe
+  #     #- "35"
+  #     #- -c
+  #     #- "256000"
+  #     #- --no-mmap
+  #     - --host
+  #     - 0.0.0.0
+  #   networks:
+  #     - proxy
+
   llama-coder:
     image: ghcr.io/ggml-org/llama.cpp:server-vulkan
     container_name: llama-coder
@@ -48,15 +81,15 @@ services:
       - /storage2/llama.cpp:/models
     command:
       - -m
-      - /models/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace/Qwen3.6-27B-Q4_K_M.gguf
+      - /models/models--unsloth--Qwen3.8-27B-UD-Q4_K_XL-GGUF/Qwen3.8-27B-UD-Q4_K_XL.gguf
       - --alias
-      - "Qwen3.6:27b-MTP"
+      - "Qwen3.8:27b-UD-Q4_K_XL"
       - -ngl
       - "999"
-      - --spec-type
-      - "draft-mtp"
-      - --spec-draft-n-max
-      - "3"
+      #- --spec-type
+      #- "draft-mtp"
+      #- --spec-draft-n-max
+      #- "3"
       #- --n-cpu-moe
       #- "35"
       #- -c
@@ -67,10 +100,13 @@ services:
     networks:
       - proxy
 
+
   llama-mini:
     image: ghcr.io/ggml-org/llama.cpp:server-vulkan
     container_name: llama-mini
     restart: unless-stopped
+    profiles:
+        - llama-mini
     devices:
       - /dev/dri
     group_add:
