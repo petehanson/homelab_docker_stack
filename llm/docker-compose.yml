@@ -86,10 +86,10 @@ services:
       - "Qwen3.8:27b-UD-Q4_K_XL"
       - -ngl
       - "999"
-      #- --spec-type
-      #- "draft-mtp"
-      #- --spec-draft-n-max
-      #- "3"
+      - --spec-type
+      - "draft-mtp"
+      - --spec-draft-n-max
+      - "3"
       #- --n-cpu-moe
       #- "35"
       #- -c
