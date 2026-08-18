@@ -99,9 +99,9 @@ services:
       - "20"
       - --min-p
       - "0.0"
-      - --presence_penalty
+      - --presence-penalty
       - "0.0"
-      - --repetition_penalty
+      - --repeat-penalty
       - "1.0"
       #- --n-cpu-moe
       #- "35"
