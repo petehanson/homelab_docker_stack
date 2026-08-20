@@ -89,7 +89,7 @@ services:
       - --spec-type
       - "draft-mtp"
       - --spec-draft-n-max
-      - "3"
+      - "2"
 
 
       - --spec-draft-type-k
