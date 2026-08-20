@@ -93,9 +93,23 @@ services:
 
 
       - --spec-draft-type-k
-      - "f16"
+      - "q8_0"
       - --spec-draft-type-v
-      - "f16"
+      - "q8_0"
+      - --cache-type-k
+      - "q8_0"
+      - --cache-type-v
+      - "q8_0"
+      - -np
+      - "1"
+      #- -np
+      #- "2"
+      - -c
+      - "262144"
+      #- -c
+      #- "181504"
+      - --cache-ram
+      - "16384"
 
       - --temp
       - "1.0"
@@ -109,11 +123,6 @@ services:
       - "0.0"
       - --repeat-penalty
       - "1.0"
-      #- --n-cpu-moe
-      #- "35"
-      #- -c
-      #- "256000"
-      #- --no-mmap
       - --host
       - 0.0.0.0
     networks:
