@@ -91,6 +91,12 @@ services:
       - --spec-draft-n-max
       - "3"
 
+
+      - --spec-draft-type-k
+      - "f16"
+      - --spec-draft-type-v
+      - "f16"
+
       - --temp
       - "1.0"
       - --top-p
