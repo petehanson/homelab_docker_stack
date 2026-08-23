@@ -82,6 +82,8 @@ services:
     command:
       - -m
       - /models/models--unsloth--Qwen3.8-27B-UD-Q4_K_XL-GGUF/Qwen3.8-27B-UD-Q4_K_XL.gguf
+      - --mmproj
+      - /models/models--unsloth--Qwen3.8-27B-UD-Q4_K_XL-GGUF/mmproj-F16.gguf
       - --alias
       - "Qwen3.8:27b-UD-Q4_K_XL"
       - -ngl
