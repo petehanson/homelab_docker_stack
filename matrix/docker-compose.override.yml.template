@@ -1,10 +1,11 @@
+# Rendered to docker-compose.override.yml by setup.sh from MATRIX_DATA_DIR
+# (default /opt/matrix), so these paths always match where setup.sh generated
+# the Synapse config.
 services:
   synapse:
     volumes:
-      # Override if synapse data lives somewhere other than /opt/matrix/synapse
-      - /opt/matrix/synapse:/data
+      - __MATRIX_DATA_DIR__/synapse:/data
 
   postgres:
     volumes:
-      # Override if postgres data lives somewhere other than /opt/matrix/postgres
-      - /opt/matrix/postgres:/var/lib/postgresql/data
+      - __MATRIX_DATA_DIR__/postgres:/var/lib/postgresql/data

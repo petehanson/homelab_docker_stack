@@ -56,7 +56,7 @@ Files that are gitignored and must be created before first run:
 - `syncthing/docker-compose.override.yml` — host-specific volume paths for syncthing
 - `garage/docker-compose.override.yml` — copy from `docker-compose.override.yml.template`; host-specific volume paths for garage
 - `garage/garage.toml` — copy from `garage.toml.template`; fill in `rpc_secret`, `admin_token`, `metrics_token` (each `openssl rand -hex 32`). See `garage/setup.sh` for the one-time cluster layout bootstrap required after first `up.sh`.
-- `matrix/homeserver.local.yaml`, `matrix/element-config.json` — rendered from their `.template`s by `matrix/setup.sh` using `HOSTNAME` and `MATRIX_DB_PASSWORD` from `.env`; setup.sh also runs Synapse's one-time `generate` (signing key + secrets in `/opt/matrix/synapse`).
+- `matrix/homeserver.local.yaml`, `matrix/element-config.json`, `matrix/docker-compose.override.yml` — rendered from their `.template`s by `matrix/setup.sh` using `HOSTNAME` and `MATRIX_DB_PASSWORD` from `.env` and the `MATRIX_DATA_DIR` env var (default `/opt/matrix`; e.g. `MATRIX_DATA_DIR=/mnt/hddpool/matrix ./matrix/setup.sh`); setup.sh also runs Synapse's one-time `generate` (signing key + secrets in `$MATRIX_DATA_DIR/synapse`).
 
 The per-service override files follow the same pattern — only override what differs on the host machine (typically volume paths).
 
