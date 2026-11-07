@@ -1,0 +1,30 @@
+# Rendered to homeserver.local.yaml by setup.sh. Overrides the generated
+# /data/homeserver.yaml; each top-level key here replaces the generated one.
+
+public_baseurl: https://matrix.__HOSTNAME__.duckdns.org/
+
+# Replaces the generated listener so the federation resource isn't served.
+listeners:
+  - port: 8008
+    type: http
+    tls: false
+    bind_addresses: ['0.0.0.0']
+    x_forwarded: true
+    resources:
+      - names: [client]
+        compress: false
+
+# Empty whitelist disables federation entirely. The server is LAN-only.
+federation_domain_whitelist: []
+
+enable_registration: false
+
+database:
+  name: psycopg2
+  args:
+    user: synapse
+    password: '__MATRIX_DB_PASSWORD__'
+    dbname: synapse
+    host: matrix_postgres
+    cp_min: 5
+    cp_max: 10

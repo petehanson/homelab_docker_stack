@@ -12,6 +12,13 @@
         handle_path /vaultwarden* {
             reverse_proxy vaultwarden:80
         }
+        # Matrix server_name is the apex domain; this tells clients the
+        # homeserver actually lives at matrix.<host>.
+        handle /.well-known/matrix/client {
+            header Content-Type application/json
+            header Access-Control-Allow-Origin *
+            respond `{"m.homeserver":{"base_url":"https://matrix.{$HOSTNAME}.duckdns.org"}}` 200
+        }
     }
 
     @pihole host pihole.{$HOSTNAME}.duckdns.org
@@ -62,5 +69,15 @@
     @searxng host search.{$HOSTNAME}.duckdns.org
     handle @searxng {
         reverse_proxy searxng:8080
+    }
+
+    @matrix host matrix.{$HOSTNAME}.duckdns.org
+    handle @matrix {
+        reverse_proxy matrix_synapse:8008
+    }
+
+    @element host element.{$HOSTNAME}.duckdns.org
+    handle @element {
+        reverse_proxy matrix_element:80
     }
 }

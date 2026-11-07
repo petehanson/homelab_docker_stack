@@ -78,3 +78,7 @@ garage/data/**/*
 
 ShinobiDocker/Shinobi/**/*
 ShinobiDocker/ShinobiSQL/**/*
+
+matrix/docker-compose.override.yml
+matrix/homeserver.local.yaml
+matrix/element-config.json

@@ -1,0 +1,59 @@
+name: matrix
+
+networks:
+  proxy:
+    external: true
+  matrix_internal:
+    driver: bridge
+
+services:
+
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: matrix_synapse
+    restart: unless-stopped
+    # homeserver.yaml (generated once by setup.sh) holds the signing key path and
+    # generated secrets; homeserver.local.yaml layers DB, URLs and federation
+    # policy on top. Synapse merges config files in order, later top-level keys win.
+    command:
+      - run
+      - --config-path=/data/homeserver.yaml
+      - --config-path=/config/homeserver.local.yaml
+    volumes:
+      - /opt/matrix/synapse:/data
+      - ./homeserver.local.yaml:/config/homeserver.local.yaml:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - proxy
+      - matrix_internal
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: matrix_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=synapse
+      - POSTGRES_PASSWORD=${MATRIX_DB_PASSWORD}
+      - POSTGRES_DB=synapse
+      # Synapse refuses to start on a DB whose collation isn't C.
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=C
+    volumes:
+      - /opt/matrix/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synapse"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - matrix_internal
+
+  element:
+    image: vectorim/element-web:latest
+    container_name: matrix_element
+    restart: unless-stopped
+    volumes:
+      - ./element-config.json:/app/config.json:ro
+    networks:
+      - proxy
