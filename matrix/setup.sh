@@ -32,6 +32,11 @@ if [[ "$DB_PASSWORD" =~ [\'\\\|\&] ]]; then
     exit 1
 fi
 
+if [[ "$MATRIX_DATA_DIR" =~ [\|\&] ]]; then
+    echo "ERROR: MATRIX_DATA_DIR must not contain | or &" >&2
+    exit 1
+fi
+
 SERVER_NAME="$HOSTNAME_VAL.duckdns.org"
 
 echo "Creating data directories..."
@@ -57,19 +62,19 @@ render() {
     fi
     sed -e "s|__HOSTNAME__|$HOSTNAME_VAL|g" \
         -e "s|__MATRIX_DB_PASSWORD__|$DB_PASSWORD|g" \
+        -e "s|__MATRIX_DATA_DIR__|$MATRIX_DATA_DIR|g" \
         "$template" > "$out"
     echo "Wrote $out"
 }
 
 render homeserver.local.yaml.template homeserver.local.yaml
 render element-config.json.template element-config.json
+render docker-compose.override.yml.template docker-compose.override.yml
 
 echo ""
 echo "Setup complete. Next steps:"
-echo "  1. Copy matrix/docker-compose.override.yml.template to matrix/docker-compose.override.yml"
-echo "     (edit volume paths if not using $MATRIX_DATA_DIR)"
-echo "  2. Reload Caddy: docker exec caddy caddy reload --config /etc/caddy/Caddyfile"
-echo "  3. Run: ./matrix/up.sh"
-echo "  4. Create your admin user:"
+echo "  1. Reload Caddy: docker exec caddy caddy reload --config /etc/caddy/Caddyfile"
+echo "  2. Run: ./matrix/up.sh"
+echo "  3. Create your admin user:"
 echo "     docker exec -it matrix_synapse register_new_matrix_user -c /data/homeserver.yaml --admin http://localhost:8008"
-echo "  5. Open https://element.$SERVER_NAME and sign in"
+echo "  4. Open https://element.$SERVER_NAME and sign in"
