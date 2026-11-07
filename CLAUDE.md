@@ -19,6 +19,7 @@ A collection of self-hosted services, each in its own Docker Compose stack, all 
 | Immich | `./immich/docker-compose.yml` | immich-server, immich-machine-learning, postgres, redis |
 | LLM | `./llm/docker-compose.yml` | ollama (port 11434 on proxy network + LAN) |
 | Open WebUI | `./openwebui/docker-compose.yml` | open-webui |
+| Matrix | `./matrix/docker-compose.yml` | synapse, postgres, element (Element Web) |
 
 ## Common Commands
 
@@ -55,6 +56,7 @@ Files that are gitignored and must be created before first run:
 - `syncthing/docker-compose.override.yml` — host-specific volume paths for syncthing
 - `garage/docker-compose.override.yml` — copy from `docker-compose.override.yml.template`; host-specific volume paths for garage
 - `garage/garage.toml` — copy from `garage.toml.template`; fill in `rpc_secret`, `admin_token`, `metrics_token` (each `openssl rand -hex 32`). See `garage/setup.sh` for the one-time cluster layout bootstrap required after first `up.sh`.
+- `matrix/homeserver.local.yaml`, `matrix/element-config.json` — rendered from their `.template`s by `matrix/setup.sh` using `HOSTNAME` and `MATRIX_DB_PASSWORD` from `.env`; setup.sh also runs Synapse's one-time `generate` (signing key + secrets in `/opt/matrix/synapse`).
 
 The per-service override files follow the same pattern — only override what differs on the host machine (typically volume paths).
 
@@ -65,6 +67,7 @@ The per-service override files follow the same pattern — only override what di
 - **Shared `proxy` network** — created once on the host (`docker network create proxy`). All stacks declare it as `external: true`. Caddy reaches backend containers by container name across stacks.
 - **Syncthing** — uses `network_mode: host` for local device discovery; not on the `proxy` network. UI available on host port 8384.
 - **Garage** — single-node S3-compatible object storage, replacing the MinIO use case for new backup targets. Like MinIO's S3 port (9000), Garage's S3 API (3900) and admin API (3903) are published directly as host ports rather than routed through Caddy — there's no browser UI to reverse-proxy, and S3/admin clients connect over the LAN. Access keys and buckets are managed via `docker exec garage /garage ...` (see `garage/setup.sh`), not env-var credentials like MinIO's `ADMIN_USER`/`ADMIN_PASSWORD`.
+- **Matrix** — Synapse's `server_name` is the apex `{$HOSTNAME}.duckdns.org` (permanent — baked into every user/room ID), while Synapse itself is served at `matrix.` and Element Web at `element.`. The apex site block answers `/.well-known/matrix/client` so clients discover `matrix.`. Federation is disabled (`federation_domain_whitelist: []`, no federation listener) to match the LAN-only setup; enabling it later needs public reachability plus `/.well-known/matrix/server`. Synapse loads the generated `/data/homeserver.yaml` then `homeserver.local.yaml` on top (later top-level keys win), so generated secrets are never edited. Registration is off; create users with `docker exec -it matrix_synapse register_new_matrix_user -c /data/homeserver.yaml http://localhost:8008`.
 - **Secrets** — `.env` at repo root holds shared credentials. Per-service scripts pass it via `--env-file ../.env`. Never hardcoded in compose files.
 - **Data dirs** — each service stores persistent data in its own subdirectory. Tracked in git via `.empty` placeholder files; actual data is gitignored.
 

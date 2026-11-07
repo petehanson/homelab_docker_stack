@@ -1,0 +1,10 @@
+services:
+  synapse:
+    volumes:
+      # Override if synapse data lives somewhere other than /opt/matrix/synapse
+      - /opt/matrix/synapse:/data
+
+  postgres:
+    volumes:
+      # Override if postgres data lives somewhere other than /opt/matrix/postgres
+      - /opt/matrix/postgres:/var/lib/postgresql/data

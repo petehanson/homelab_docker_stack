@@ -39,4 +39,7 @@ echo "Starting searxng..."
 echo "Starting crafty..."
 "$ROOT/crafty/up.sh"
 
+echo "Starting matrix..."
+"$ROOT/matrix/up.sh"
+
 echo "All services up."

@@ -3,6 +3,9 @@ set -e
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
+echo "Stopping matrix..."
+"$ROOT/matrix/down.sh"
+
 echo "Stopping nomad..."
 "$ROOT/nomad/down.sh"
 
