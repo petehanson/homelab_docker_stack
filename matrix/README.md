@@ -34,3 +34,27 @@ container has it, which is what keeps account creation admin-only.
 The new user's ID is `@alice:<hostname>.duckdns.org`. They sign in at
 `https://element.<hostname>.duckdns.org` with the username and password. They can
 change the password afterwards in Element's settings.
+
+## Backups
+
+`backup.sh` dumps the Synapse database (`pg_dump`, safe while running) into
+`$MATRIX_DATA_DIR/dumps/` and keeps the newest 14 dumps (`MATRIX_BACKUP_KEEP` to
+change). A dump is only kept, and old ones only pruned, if `pg_restore` can read it.
+
+```bash
+MATRIX_DATA_DIR=/mnt/hddpool/matrix ./matrix/backup.sh
+```
+
+Run it on a schedule (cron / TrueNAS cron job) before your regular backup of
+`/mnt/hddpool/matrix`, which then picks up the dumps alongside `synapse/`
+(generated secrets, signing key, uploaded media).
+
+To restore, start only Postgres against an empty data dir, load the dump, then
+start the stack:
+
+```bash
+cd matrix
+docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.override.yml up -d postgres
+docker exec -i matrix_postgres pg_restore -U synapse -d synapse --no-owner < /mnt/hddpool/matrix/dumps/synapse-<timestamp>.dump
+./up.sh
+```
